@@ -3,12 +3,18 @@ package main
 import (
 	"fmt"
 	"github.com/tnaucoin/cloudnativego/cmd/api/router"
-	"github.com/tnaucoin/cloudnativego/config"
 	"io"
 	"log"
 	"net/http"
 )
 
+// @title CloudNativeGo
+// @version 1.0
+// @description CloudNative API written in GO
+// @contact.name Travis Aucoin
+// @contact.url github.com/tnaucoin/cloudnativego
+// @host localhost:8080
+// @basePath /v1
 func main() {
 	c := config.New()
 	r := router.New()
