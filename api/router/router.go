@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/go-chi/chi/v5"
-	"github.com/tnaucoin/cloudnativego/cmd/api/resource/book"
-	"github.com/tnaucoin/cloudnativego/cmd/api/resource/health"
+	"github.com/tnaucoin/cloudnativego/api/resource/book"
+	"github.com/tnaucoin/cloudnativego/api/resource/health"
 )
 
 func New() *chi.Mux {

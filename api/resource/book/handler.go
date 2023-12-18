@@ -1,8 +1,12 @@
 package book
 
-import "net/http"
+import (
+	"net/http"
+)
 
-type API struct{}
+type API struct {
+	repository *Repository
+}
 
 // List godoc
 //
