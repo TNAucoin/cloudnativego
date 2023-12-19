@@ -1,11 +1,18 @@
 package book
 
 import (
+	"gorm.io/gorm"
 	"net/http"
 )
 
 type API struct {
 	repository *Repository
+}
+
+func New(db *gorm.DB) *API {
+	return &API{
+		repository: NewRepository(db),
+	}
 }
 
 // List godoc
