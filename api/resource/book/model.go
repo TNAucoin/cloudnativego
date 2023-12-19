@@ -2,6 +2,7 @@ package book
 
 import (
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -31,7 +32,7 @@ type Book struct {
 	Description   string
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
-	DeletedAt     time.Time
+	DeletedAt     gorm.DeletedAt
 }
 
 type Books []*Book
