@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-const fmtDBString = "host=%s user=%s password=%s dbname=%s port=%d sslmode=disabled"
+const fmtDBString = "host=%s user=%s password=%s dbname=%s port=%d sslmode=disable"
 
 // @title CloudNativeGo
 // @version 1.0
@@ -43,7 +43,7 @@ func main() {
 		IdleTimeout:  c.Server.TimeoutIdle,
 	}
 	log.Println("Starting server " + s.Addr)
-	if err := s.ListenAndServe(); err != http.ErrServerClosed && err != nil {
+	if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatal("server startup failed")
 	}
 }
