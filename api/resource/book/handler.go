@@ -5,19 +5,23 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	e "github.com/tnaucoin/cloudnativego/api/resource/common/err"
+	validatorUtil "github.com/tnaucoin/cloudnativego/util/validator"
 	"gorm.io/gorm"
 	"net/http"
 )
 
 type API struct {
 	repository *Repository
+	validator  *validator.Validate
 }
 
-func New(db *gorm.DB) *API {
+func New(db *gorm.DB, v *validator.Validate) *API {
 	return &API{
 		repository: NewRepository(db),
+		validator:  v,
 	}
 }
 
@@ -64,6 +68,15 @@ func (a *API) Create(w http.ResponseWriter, r *http.Request) {
 	form := &Form{}
 	if err := json.NewDecoder(r.Body).Decode(form); err != nil {
 		e.ServerError(w, e.RespJSONEncodeFailure)
+		return
+	}
+	if err := a.validator.Struct(form); err != nil {
+		respBody, err := json.Marshal(validatorUtil.ToErrResponse(err))
+		if err != nil {
+			e.ServerError(w, e.RespJSONEncodeFailure)
+			return
+		}
+		e.ValidationErrors(w, respBody)
 		return
 	}
 	newBook := form.ToModel()
@@ -137,6 +150,15 @@ func (a *API) Update(w http.ResponseWriter, r *http.Request) {
 	form := &Form{}
 	if err := json.NewDecoder(r.Body).Decode(form); err != nil {
 		e.ServerError(w, e.RespJSONDecodeFailure)
+		return
+	}
+	if err := a.validator.Struct(form); err != nil {
+		respBody, err := json.Marshal(validatorUtil.ToErrResponse(err))
+		if err != nil {
+			e.ServerError(w, e.RespJSONEncodeFailure)
+			return
+		}
+		e.ValidationErrors(w, respBody)
 		return
 	}
 	book := form.ToModel()

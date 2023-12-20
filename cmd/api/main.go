@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/tnaucoin/cloudnativego/api/router"
 	"github.com/tnaucoin/cloudnativego/config"
+	"github.com/tnaucoin/cloudnativego/util/validator"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
@@ -22,6 +23,7 @@ const fmtDBString = "host=%s user=%s password=%s dbname=%s port=%d sslmode=disab
 // @basePath /v1
 func main() {
 	c := config.New()
+	v := validator.New()
 
 	logLevel := gormlogger.Error
 	if c.DB.Debug {
@@ -34,7 +36,7 @@ func main() {
 		return
 	}
 
-	r := router.New(db)
+	r := router.New(db, v)
 	s := &http.Server{
 		Addr:         fmt.Sprintf(":%d", c.Server.Port),
 		Handler:      r,
